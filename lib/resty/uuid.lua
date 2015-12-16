@@ -26,10 +26,10 @@ typedef struct timeval {
  time_t uuid_time(const uuid_t uu, struct timeval *ret_tv);
 ]]
 
-local lib = os == "OSX" and C or ffi_load("uuid")
-local uid = ffi_new("uuid_t")
+local lib = os == "OSX" and C or ffi_load "uuid"
+local uid = ffi_new "uuid_t"
 local buf = ffi_new("char[?]", 36)
-local tvl = ffi_new("timeval")
+local tvl = ffi_new "timeval"
 
 local uuid = {}
 local mt   = {}
