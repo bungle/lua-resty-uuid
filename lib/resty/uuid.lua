@@ -28,8 +28,8 @@ typedef struct timeval {
 
 local lib = os == "OSX" and C or ffi_load "uuid"
 local uid = ffi_new "uuid_t"
-local buf = ffi_new("char[?]", 36)
 local tvl = ffi_new "timeval"
+local buf = ffi_new("char[?]", 36)
 
 local uuid = {}
 local mt   = {}
