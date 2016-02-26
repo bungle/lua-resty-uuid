@@ -64,16 +64,25 @@ function uuid.generate_time_safe()
 end
 
 function uuid.type(id)
-    return lib.uuid_type(parse(id))
+    local parsed = parse(id)
+    return parsed and lib.uuid_type(parsed)
 end
 
 function uuid.variant(id)
-    return lib.uuid_variant(parse(id))
+    local parsed = parse(id)
+    return parsed and lib.uuid_variant(parsed)
 end
 
 function uuid.time(id)
-    local secs = lib.uuid_time(parse(id), tvl)
-    return tonumber(secs), tonumber(tvl.tv_usec)
+    local parsed = parse(id)
+    if parsed then
+      local secs = lib.uuid_time(parsed, tvl)
+      return tonumber(secs), tonumber(tvl.tv_usec)
+    end
+end
+
+function uuid.is_valid(id)
+    return not not parse(id)
 end
 
 mt.__call = uuid.generate
