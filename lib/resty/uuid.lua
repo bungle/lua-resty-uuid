@@ -4,7 +4,9 @@ local ffi_str      = ffi.string
 local ffi_load     = ffi.load
 local ffi_cdef     = ffi.cdef
 local C            = ffi.C
-local os           = ffi.os
+local OSX          = ffi.os == "OSX"
+local pcall        = pcall
+local assert       = assert
 local tonumber     = tonumber
 local setmetatable = setmetatable
 
@@ -26,7 +28,15 @@ typedef struct timeval {
  time_t uuid_time(const uuid_t uu, struct timeval *ret_tv);
 ]]
 
-local lib = os == "OSX" and C or ffi_load "uuid"
+local function L(n)
+    local ok, lib = pcall(ffi_load, n)
+    if ok then return lib end
+    ok, lib = pcall(ffi_load, n .. '.so.1')
+    assert(ok, lib)
+    return lib
+end
+
+local lib = OSX and C or L "uuid"
 local uid = ffi_new "uuid_t"
 local tvl = ffi_new "timeval"
 local buf = ffi_new("char[?]", 36)
@@ -59,15 +69,18 @@ function uuid.generate_time()
 end
 
 function uuid.generate_time_safe()
+    assert(not OSX, "uuid_generate_time_safe is not supported on OS X.")
     local safe = lib.uuid_generate_time_safe(uid) == 0
     return unparse(uid), safe
 end
 
 function uuid.type(id)
+    assert(not OSX, "uuid_type is not supported on OS X.")
     return lib.uuid_type(parse(id))
 end
 
 function uuid.variant(id)
+    assert(not OSX, "uuid_variant is not supported on OS X.")
     return lib.uuid_variant(parse(id))
 end
 

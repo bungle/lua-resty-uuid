@@ -1,4 +1,9 @@
 
+Changes with lua-resty-uuid 1.1                                  13 Apr 2016
+
+    *) Bugfix: Fixes issue with library loader on Linux.
+       (See also: https://github.com/bungle/lua-resty-uuid/issues/3)
+
 Changes with lua-resty-uuid 1.0                                  22 Jan 2016
 
     *) Feature: LuaRocks Support via MoonRocks.
