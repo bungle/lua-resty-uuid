@@ -89,8 +89,8 @@ end
 function uuid.time(id)
     local parsed = parse(id)
     if parsed then
-      local secs = lib.uuid_time(parsed, tvl)
-      return tonumber(secs), tonumber(tvl.tv_usec)
+        local secs = lib.uuid_time(parsed, tvl)
+        return tonumber(secs), tonumber(tvl.tv_usec)
     end
 end
 
