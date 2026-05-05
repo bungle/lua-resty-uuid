@@ -1,0 +1,454 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>LuaJIT FFI bindings to UUID</title>
+    <link rel="stylesheet" href="ldoc_new.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>resty.uuid</h1>
+
+<img src="data/icon.png" />
+
+
+
+
+<h2>Generate Functions </h2>
+<ul class="nowrap">
+    <li><a href="#generate">generate ()</a></li>
+    <li><a href="#generate_random">generate_random ()</a></li>
+    <li><a href="#generate_time">generate_time ()</a></li>
+    <li><a href="#generate_time_safe">generate_time_safe ()</a></li>
+    <li><a href="#generate_time_v6">generate_time_v6 ()</a></li>
+    <li><a href="#generate_time_v7">generate_time_v7 ()</a></li>
+</ul>
+<h2>Time Extraction </h2>
+<ul class="nowrap">
+    <li><a href="#time">time (id)</a></li>
+</ul>
+<h2>Type / Variant Functions </h2>
+<ul class="nowrap">
+    <li><a href="#type">type (id)</a></li>
+    <li><a href="#variant">variant (id)</a></li>
+</ul>
+<h2>Validation Functions </h2>
+<ul class="nowrap">
+    <li><a href="#is_valid">is_valid (id)</a></li>
+</ul>
+<h2>Metamethods </h2>
+<ul class="nowrap">
+    <li><a href="#__call">__call ()</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>resty.uuid</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>resty.uuid</code></h1>
+<p>LuaJIT FFI bindings to UUID library</p>
+<p></p>
+
+
+
+    <h2 class="section-header "><a name="Generate_Functions"></a>Generate Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "generate"></a>
+    <strong>generate ()</strong>
+    </dt>
+    <dd>
+    Generates a new UUID.</p>
+
+<p> Picks the best available generator on the host: prefers a high-quality
+ randomness source (v4) when available, otherwise falls back to a
+ time-based UUID (v1).
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        a 36-character canonical UUID (e.g. <code>&quot;f81d4fae-7dec-11d0-a765-00a0c91e6bf6&quot;</code>).
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> id = uuid.<span class="function-name">generate</span>()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "generate_random"></a>
+    <strong>generate_random ()</strong>
+    </dt>
+    <dd>
+    Generates a random (version 4) UUID.</p>
+
+<p> Uses the system&rsquo;s cryptographic random source. If high-quality randomness
+ is unavailable, libuuid falls back to a pseudo-random generator.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        a 36-character canonical v4 UUID.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> id = uuid.<span class="function-name">generate_random</span>()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "generate_time"></a>
+    <strong>generate_time ()</strong>
+    </dt>
+    <dd>
+    Generates a time-based (version 1) UUID.</p>
+
+<p> Encodes the current timestamp and the host&rsquo;s MAC address (or a random
+ node id when no MAC is available).
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        a 36-character canonical v1 UUID.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> id = uuid.<span class="function-name">generate_time</span>()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "generate_time_safe"></a>
+    <strong>generate_time_safe ()</strong>
+    </dt>
+    <dd>
+    Generates a time-based (version 1) UUID and reports whether generation
+  was uniqueness-safe.</p>
+
+<p> The <code>safe</code> flag indicates whether libuuid was able to use synchronization
+ (typically via <code>uuidd</code>) to guarantee uniqueness across concurrent callers.
+ A value of <code>false</code> means the UUID is still well-formed but may collide if
+ the same node generates many UUIDs in the same clock tick from multiple
+ processes.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        a 36-character canonical v1 UUID.</li>
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if generation was synchronized/safe, <code>false</code> otherwise.</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> id, safe = uuid.<span class="function-name">generate_time_safe</span>()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "generate_time_v6"></a>
+    <strong>generate_time_v6 ()</strong>
+    </dt>
+    <dd>
+    Generates a reordered time-based (version 6) UUID.</p>
+
+<p> Version 6 reorders the v1 timestamp fields so the UUID sorts naturally
+ in lexical order, while remaining compatible with v1 node/clock semantics.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        a 36-character canonical v6 UUID.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> id = uuid.<span class="function-name">generate_time_v6</span>()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "generate_time_v7"></a>
+    <strong>generate_time_v7 ()</strong>
+    </dt>
+    <dd>
+    Generates a Unix-epoch time-based (version 7) UUID.</p>
+
+<p> Version 7 encodes a millisecond-resolution Unix timestamp followed by
+ random bits, and sorts naturally in lexical order.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        a 36-character canonical v7 UUID.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> id = uuid.<span class="function-name">generate_time_v7</span>()</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Time_Extraction"></a>Time Extraction </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "time"></a>
+    <strong>time (id)</strong>
+    </dt>
+    <dd>
+    Extracts the timestamp embedded in a time-based UUID.</p>
+
+<p> Only meaningful for v1, v6 and v7 UUIDs. For other versions the result
+ is the value libuuid synthesizes from the bits and is not a real time.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">id</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         a UUID string to inspect.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types">optional <span class="type">number</span></span>
+        seconds since the Unix epoch, or <code>nil</code> if <code>id</code> is not a valid UUID.</li>
+        <li>
+           <span class="types">optional <span class="type">number</span></span>
+        microseconds within that second.</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> secs, usecs = uuid.<span class="function-name">time</span>(id)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Type___Variant_Functions"></a>Type / Variant Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "type"></a>
+    <strong>type (id)</strong>
+    </dt>
+    <dd>
+    Returns the UUID type (version) of a UUID string.</p>
+
+<p> The returned integer corresponds to libuuid&rsquo;s <code>UUID_TYPE_*</code> constants
+ (<code>1</code> = DCE time/v1, <code>4</code> = DCE random/v4, <code>6</code> = v6, <code>7</code> = v7, etc.).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">id</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         a UUID string to inspect.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types">optional <span class="type">int</span></span>
+        the UUID type, or <code>nil</code> if <code>id</code> is not a valid UUID.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> t = uuid.<span class="global">type</span>(<span class="string">"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"</span>) <span class="comment">--&gt; 1</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "variant"></a>
+    <strong>variant (id)</strong>
+    </dt>
+    <dd>
+    Returns the UUID variant of a UUID string.</p>
+
+<p> The returned integer corresponds to libuuid&rsquo;s <code>UUID_VARIANT_*</code> constants
+ (<code>0</code> = NCS, <code>1</code> = DCE, <code>2</code> = Microsoft, <code>3</code> = other/reserved).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">id</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         a UUID string to inspect.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types">optional <span class="type">int</span></span>
+        the UUID variant, or <code>nil</code> if <code>id</code> is not a valid UUID.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">local</span> v = uuid.<span class="function-name">variant</span>(<span class="string">"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"</span>) <span class="comment">--&gt; 1</span></pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Validation_Functions"></a>Validation Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "is_valid"></a>
+    <strong>is_valid (id)</strong>
+    </dt>
+    <dd>
+    Tests whether a string is a syntactically valid UUID.</p>
+
+<p> Accepts the canonical 36-character <code>8-4-4-4-12</code> hex form in either case.
+ Does not check the version or variant fields beyond what libuuid&rsquo;s parser
+ requires.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">id</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the candidate UUID string.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if <code>id</code> parses as a UUID, <code>false</code> otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)
+<span class="keyword">if</span> uuid.<span class="function-name">is_valid</span>(s) <span class="keyword">then</span>
+  ...
+<span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "__call"></a>
+    <strong>__call ()</strong>
+    </dt>
+    <dd>
+    Calls the module as a shortcut for <a href="index.html#generate">uuid.generate</a>.</p>
+
+<p> Lets you write <code>uuid()</code> instead of <code>uuid.generate()</code>.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        a 36-character canonical UUID.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> uuid = <span class="global">require</span>(<span class="string">"resty.uuid"</span>)'
+<span class="keyword">local</span> id = <span class="function-name">uuid</span>()</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2026-05-05 10:40:01 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

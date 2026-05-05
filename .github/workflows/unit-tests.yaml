@@ -1,0 +1,19 @@
+name: unit-tests
+on: [pull_request]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        luaVersion: ["luajit-openresty"]
+    
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup environment
+        run: docker build dev/ -t resty-uuid
+
+      - name: Run tests
+        run: docker run --network=host -v $PWD:/test -w /test resty-uuid bash -c "make test"
