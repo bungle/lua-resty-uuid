@@ -65,6 +65,8 @@ uuid.time(some_v1_id)        --> 1714867200, 123456
 The module is a table that is also callable. Calling `uuid()` is a
 shortcut for `uuid.generate()`.
 
+See also [LDocs](https://bungle.github.io/lua-resty-uuid/).
+
 ### Generators
 
 | Function | Returns | Description |
