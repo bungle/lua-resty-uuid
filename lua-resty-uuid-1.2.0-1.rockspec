@@ -1,5 +1,5 @@
 package = "lua-resty-uuid"
-version = "dev-1"
+version = "1.2.0-1"
 source = {
     url = "git://github.com/bungle/lua-resty-uuid.git"
 }

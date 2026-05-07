@@ -1,0 +1,12 @@
+project = "resty.uuid"
+description = "DCE compatible Universally Unique Identifier (UUID/GUID) library"
+full_description = "`lua-resty-uuid` implements a LuaJIT FFI bindings to UUID"
+title = "LuaJIT FFI bindings to UUID"
+dir = "docs"
+use_markdown_titles = true
+package = "resty"
+format = "discount"
+file = "lib"
+style = "!new"
+icon = "icon.png"
+no_summary = true
