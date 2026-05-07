@@ -1,7 +1,7 @@
 package = "lua-resty-uuid"
 version = "1.2.0-1"
 source = {
-    url = "git://github.com/bungle/lua-resty-uuid.git"
+    url = "git+https://github.com/bungle/lua-resty-uuid.git"
 }
 description = {
     summary = "DCE compatible Universally Unique Identifier (UUID/GUID) library",
